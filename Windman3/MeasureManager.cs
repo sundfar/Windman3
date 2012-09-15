@@ -58,7 +58,12 @@ namespace Windman3
             if (pMeasure.Length == _packetSize)
             {
                 Measure m = new Measure();
+                m.WindSpeedAverage = CalculateWindSpeedAverage(decimal.Parse(pMeasure[8].ToString()), decimal.Parse(pMeasure[9].ToString()));
+                m.WindSpeedMinimum = CalculateWindSpeedMinimum(decimal.Parse(pMeasure[12].ToString()), decimal.Parse(pMeasure[13].ToString()));
+                m.WindSpeedMaximum = CalculateWindSpeedMaximum(decimal.Parse(pMeasure[14].ToString()), decimal.Parse(pMeasure[15].ToString()));
                 m.WindDirection = CalculateWindDirection(decimal.Parse(pMeasure[50].ToString()), decimal.Parse(pMeasure[51].ToString()));
+                m.Temperature = CalculateTemperature(decimal.Parse(pMeasure[64].ToString()), decimal.Parse(pMeasure[65].ToString()));
+                m.BatteryVoltage = CalculateBatteryVoltage(decimal.Parse(pMeasure[44].ToString()), decimal.Parse(pMeasure[45].ToString()));
 
                 _measure = m;
                 _measures.Add(m);
@@ -87,7 +92,32 @@ namespace Windman3
 
         private decimal CalculateWindDirection(decimal pMSB, decimal pLSB)
         {
-            return (0.0878906m * ((pMSB * 256) + pLSB));
+            return (0.0878906M * ((pMSB * 256) + pLSB));
+        }
+
+        private decimal CalculateWindSpeedAverage(decimal pMSB, decimal pLSB)
+        {
+            return ((2.55M * 0.44704M) * pLSB) * 60;
+        }
+
+        private decimal CalculateWindSpeedMinimum(decimal pMSB, decimal pLSB)
+        {
+            return ((2.55M * 0.44704M) * pMSB) * 60;
+        }
+
+        private decimal CalculateWindSpeedMaximum(decimal pMSB, decimal pLSB)
+        {
+            return ((2.55M * 0.44704M) * pMSB) * 60;
+        }
+
+        private decimal CalculateTemperature(decimal pMSB, decimal pLSB)
+        {
+            return ((((pMSB * 256) + pLSB) * 0.024414M) - 40);
+        }
+
+        private decimal CalculateBatteryVoltage(decimal pMSB, decimal pLSB)
+        {
+            return (100/4096) * (pMSB * 256) + pLSB;
         }
 
         public void Reset()

@@ -22,6 +22,15 @@ namespace Windman3
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            lblLastMeasure.Text = "";
+            lblLastMeasure.Text = "";
+            lblTemperature.Text = "";
+            lblWindDirection.Text = "";
+            lblWindSpeedAverage.Text = "";
+            lblWindSpeedMaximum.Text = "";
+            lblWindSpeedMinimum.Text = "";
+            lblBatteryVoltage.Text = "";
+
             _vsComm = new VindsidenCommunication();
             _measureManager = new MeasureManager();
             _spManager = new SerialPortManager(_measureManager);
@@ -44,6 +53,15 @@ namespace Windman3
                 if (_measureManager.CurrentMeasure != null)
                 {
                     textBox1.Text += _measureManager.CurrentMeasure.WindDirection.ToString() + " | .";
+                    lblLastMeasure.Text = DateTime.Now.ToString("dd.MM.yyyy HH:mm", System.Globalization.CultureInfo.CreateSpecificCulture("nb-NO"));
+                    lblWindDirection.Text = _measureManager.CurrentMeasure.WindDirectionAsString;
+                    lblWindSpeedAverage.Text = _measureManager.CurrentMeasure.WindSpeedAverageAsString;
+                    lblWindSpeedMinimum.Text = _measureManager.CurrentMeasure.WindSpeedMinimumAsString;
+                    lblWindSpeedMaximum.Text = _measureManager.CurrentMeasure.WindSpeedMaximumAsString;
+                    lblWindDirection.Text = _measureManager.CurrentMeasure.WindDirectionAsString;
+                    lblTemperature.Text = _measureManager.CurrentMeasure.TemperatureAsString;
+                    lblBatteryVoltage.Text = _measureManager.CurrentMeasure.BatteryVoltageAsString;
+                    //Send til Vindsiden.no
                     _vsComm.SendData(_measureManager.CurrentMeasure);
                 }
             }
