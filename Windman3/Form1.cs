@@ -14,7 +14,7 @@ namespace Windman3
     {
         MeasureManager _measureManager;
         SerialPortManager _spManager;
-        
+        VindsidenCommunication _vsComm;
         public Form1()
         {
             InitializeComponent();
@@ -22,6 +22,7 @@ namespace Windman3
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            _vsComm = new VindsidenCommunication();
             _measureManager = new MeasureManager();
             _spManager = new SerialPortManager(_measureManager);
             _spManager.NewSerialDataRecieved += new EventHandler<SerialDataEventArgs>(_spManager_NewSerialDataRecieved);
@@ -43,21 +44,10 @@ namespace Windman3
                 if (_measureManager.CurrentMeasure != null)
                 {
                     textBox1.Text += _measureManager.CurrentMeasure.WindDirection.ToString() + " | .";
+                    _vsComm.SendData(_measureManager.CurrentMeasure);
                 }
             }
-
-            
-            //if (e.Data[0] == 35)
-            //{
-            //    decimal decMSB = decimal.Parse(e.Data[50].ToString());
-            //    decimal decLSB = decimal.Parse(e.Data[51].ToString());
-
-            //    decimal res = 0.0878906m * ((decMSB * 256) + decLSB);
-            //    textBox1.Text += ((int)res).ToString();
-            //}
-            //else
-            //    textBox1.Text += " | ";
-
+            _measureManager.Reset();
         }
     }
 }

@@ -8,18 +8,17 @@ namespace Windman3
 {
     public class MeasureManager
     {
-        private int packetSize;
-        //private byte[] _measureArray;
+        private int _packetSize;
         private Measure _measure;
         private List<Measure> _measures;
-        public bool IsReady { get; set; }
 
+        public bool IsReady { get; set; }
 
         public int PacketSize
         {
             get
             {
-                return packetSize;
+                return _packetSize;
             }
         }
 
@@ -28,27 +27,35 @@ namespace Windman3
         {
             get 
             {
-                //foreach (var item in _measures)
-                //{
-                //    return item;
-                //}
+                if (_measures == null)
+                {
+                    return new Measure();
+                }
+                if (_measures.Count == 0)
+                {
+                    return new Measure();
+                }
                 Measure averageMeasure = new Measure();
+                averageMeasure.WindSpeedMinimum = _measures.Average(m => m.WindSpeedMinimum);
+                averageMeasure.WindSpeedMaximum = _measures.Average(m => m.WindSpeedMaximum);
+                averageMeasure.WindSpeedAverage = _measures.Average(m => m.WindSpeedAverage);
                 averageMeasure.WindDirection = _measures.Average(m => m.WindDirection);
+                averageMeasure.Temperature = _measures.Average(m => m.Temperature);
+                averageMeasure.BatteryVoltage = _measures.Average(m => m.BatteryVoltage);
                 return averageMeasure;
-                //return null;
             }
         }
 
         public MeasureManager()
         {
-            packetSize = Int32.Parse(ConfigurationManager.AppSettings["PacketSize"].ToString());
+            _packetSize = Int32.Parse(ConfigurationManager.AppSettings["PacketSize"].ToString());
             IsReady = false;
             _measures = new List<Measure>();
             _measure = new Measure();
         }
         public void Add(byte[] pMeasure)
         {
-            if (pMeasure.Length == packetSize)
+            if (pMeasure.Length == _packetSize)
             {
                 Measure m = new Measure();
                 m.WindDirection = CalculateWindDirection(decimal.Parse(pMeasure[50].ToString()), decimal.Parse(pMeasure[51].ToString()));
