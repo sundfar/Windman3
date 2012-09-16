@@ -10,7 +10,18 @@ namespace Windman3
     {
         private int _packetSize;
         private Measure _measure;
+        private decimal _measureIntervall;
+        private decimal _mphFactor;
+        private decimal _msFactor;
+        private decimal _msbFactor;
         private List<Measure> _measures;
+
+        public string WindMSB { get; set; }
+        public string WindLSB { get; set; }
+        public string WindMinMSB { get; set; }
+        public string WindMinLSB { get; set; }
+        public string WindMaxMSB { get; set; }
+        public string WindMaxLSB { get; set; }
 
         public bool IsReady { get; set; }
 
@@ -49,6 +60,10 @@ namespace Windman3
         public MeasureManager()
         {
             _packetSize = Int32.Parse(ConfigurationManager.AppSettings["PacketSize"].ToString());
+            _measureIntervall = decimal.Parse(ConfigurationManager.AppSettings["MeasureIntervallInSeconds"].ToString());
+            _mphFactor = 2.25M;
+            _msFactor = 0.44704M;
+            _msbFactor = 256M;
             IsReady = false;
             _measures = new List<Measure>();
             _measure = new Measure();
@@ -58,12 +73,18 @@ namespace Windman3
             if (pMeasure.Length == _packetSize)
             {
                 Measure m = new Measure();
-                m.WindSpeedAverage = CalculateWindSpeedAverage(decimal.Parse(pMeasure[8].ToString()), decimal.Parse(pMeasure[9].ToString()));
-                m.WindSpeedMinimum = CalculateWindSpeedMinimum(decimal.Parse(pMeasure[12].ToString()), decimal.Parse(pMeasure[13].ToString()));
-                m.WindSpeedMaximum = CalculateWindSpeedMaximum(decimal.Parse(pMeasure[14].ToString()), decimal.Parse(pMeasure[15].ToString()));
-                m.WindDirection = CalculateWindDirection(decimal.Parse(pMeasure[50].ToString()), decimal.Parse(pMeasure[51].ToString()));
-                m.Temperature = CalculateTemperature(decimal.Parse(pMeasure[64].ToString()), decimal.Parse(pMeasure[65].ToString()));
-                m.BatteryVoltage = CalculateBatteryVoltage(decimal.Parse(pMeasure[44].ToString()), decimal.Parse(pMeasure[45].ToString()));
+                m.WindSpeedAverage = CalculateWindSpeedAverage(ToDec(pMeasure[8]), ToDec(pMeasure[9]));
+                WindMSB = pMeasure[8].ToString();
+                WindLSB = pMeasure[9].ToString();
+                WindMinMSB = pMeasure[14].ToString();
+                WindMinLSB = pMeasure[15].ToString();
+                WindMaxMSB = pMeasure[12].ToString();
+                WindMaxLSB = pMeasure[13].ToString();
+                m.WindSpeedMinimum = CalculateWindSpeedMinimum(ToDec(pMeasure[14]), ToDec(pMeasure[15]));
+                m.WindSpeedMaximum = CalculateWindSpeedMaximum(ToDec(pMeasure[12]), ToDec(pMeasure[13]));
+                m.WindDirection = CalculateWindDirection(ToDec(pMeasure[50]), ToDec(pMeasure[51]));
+                m.Temperature = CalculateTemperature(ToDec(pMeasure[64]), ToDec(pMeasure[65]));
+                m.BatteryVoltage = CalculateBatteryVoltage(ToDec(pMeasure[44]), ToDec(pMeasure[45]));
 
                 _measure = m;
                 _measures.Add(m);
@@ -90,34 +111,39 @@ namespace Windman3
             //}
         }
 
+        private decimal ToDec(byte pByte)
+        {
+            return decimal.Parse(pByte.ToString());
+        }
+
         private decimal CalculateWindDirection(decimal pMSB, decimal pLSB)
         {
-            return (0.0878906M * ((pMSB * 256) + pLSB));
+            return (0.0878906M * ((pMSB * _msbFactor) + pLSB));
         }
 
         private decimal CalculateWindSpeedAverage(decimal pMSB, decimal pLSB)
         {
-            return ((2.55M * 0.44704M) * pLSB) * 60;
+            return ((_mphFactor * _msFactor) * ((pMSB * _msbFactor) + pLSB)) / _measureIntervall;
         }
 
         private decimal CalculateWindSpeedMinimum(decimal pMSB, decimal pLSB)
         {
-            return ((2.55M * 0.44704M) * pMSB) * 60;
+            return ((_mphFactor * _msFactor) * ((pMSB * _msbFactor) + pLSB)) / _measureIntervall;
         }
 
         private decimal CalculateWindSpeedMaximum(decimal pMSB, decimal pLSB)
         {
-            return ((2.55M * 0.44704M) * pMSB) * 60;
+            return ((_mphFactor * _msFactor) * ((pMSB * _msbFactor) + pLSB)) / _measureIntervall;
         }
 
         private decimal CalculateTemperature(decimal pMSB, decimal pLSB)
         {
-            return ((((pMSB * 256) + pLSB) * 0.024414M) - 40);
+            return ((((pMSB * _msbFactor) + pLSB) * 0.024414M) - 40);
         }
 
         private decimal CalculateBatteryVoltage(decimal pMSB, decimal pLSB)
         {
-            return (100/4096) * (pMSB * 256) + pLSB;
+            return (100M / 4096M) * ((pMSB * _msbFactor) + pLSB);
         }
 
         public void Reset()

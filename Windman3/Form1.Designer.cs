@@ -43,6 +43,14 @@
             this.lblWindDirection = new System.Windows.Forms.Label();
             this.lblTemperature = new System.Windows.Forms.Label();
             this.lblBatteryVoltage = new System.Windows.Forms.Label();
+            this.lblWindMSB = new System.Windows.Forms.Label();
+            this.lblWindLSB = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.lblWindMinMSB = new System.Windows.Forms.Label();
+            this.lblWindMaxMSB = new System.Windows.Forms.Label();
+            this.lblWindMinLSB = new System.Windows.Forms.Label();
+            this.lblWindMaxLSB = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -179,11 +187,91 @@
             this.lblBatteryVoltage.TabIndex = 14;
             this.lblBatteryVoltage.Text = "01.01.2012 13:13";
             // 
+            // lblWindMSB
+            // 
+            this.lblWindMSB.AutoSize = true;
+            this.lblWindMSB.Location = new System.Drawing.Point(285, 41);
+            this.lblWindMSB.Name = "lblWindMSB";
+            this.lblWindMSB.Size = new System.Drawing.Size(91, 13);
+            this.lblWindMSB.TabIndex = 15;
+            this.lblWindMSB.Text = "01.01.2012 13:13";
+            // 
+            // lblWindLSB
+            // 
+            this.lblWindLSB.AutoSize = true;
+            this.lblWindLSB.Location = new System.Drawing.Point(390, 41);
+            this.lblWindLSB.Name = "lblWindLSB";
+            this.lblWindLSB.Size = new System.Drawing.Size(91, 13);
+            this.lblWindLSB.TabIndex = 16;
+            this.lblWindLSB.Text = "01.01.2012 13:13";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(285, 9);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(30, 13);
+            this.label8.TabIndex = 17;
+            this.label8.Text = "MSB";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(390, 9);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(27, 13);
+            this.label9.TabIndex = 18;
+            this.label9.Text = "LSB";
+            // 
+            // lblWindMinMSB
+            // 
+            this.lblWindMinMSB.AutoSize = true;
+            this.lblWindMinMSB.Location = new System.Drawing.Point(285, 64);
+            this.lblWindMinMSB.Name = "lblWindMinMSB";
+            this.lblWindMinMSB.Size = new System.Drawing.Size(91, 13);
+            this.lblWindMinMSB.TabIndex = 19;
+            this.lblWindMinMSB.Text = "01.01.2012 13:13";
+            // 
+            // lblWindMaxMSB
+            // 
+            this.lblWindMaxMSB.AutoSize = true;
+            this.lblWindMaxMSB.Location = new System.Drawing.Point(285, 86);
+            this.lblWindMaxMSB.Name = "lblWindMaxMSB";
+            this.lblWindMaxMSB.Size = new System.Drawing.Size(91, 13);
+            this.lblWindMaxMSB.TabIndex = 20;
+            this.lblWindMaxMSB.Text = "01.01.2012 13:13";
+            // 
+            // lblWindMinLSB
+            // 
+            this.lblWindMinLSB.AutoSize = true;
+            this.lblWindMinLSB.Location = new System.Drawing.Point(390, 64);
+            this.lblWindMinLSB.Name = "lblWindMinLSB";
+            this.lblWindMinLSB.Size = new System.Drawing.Size(91, 13);
+            this.lblWindMinLSB.TabIndex = 21;
+            this.lblWindMinLSB.Text = "01.01.2012 13:13";
+            // 
+            // lblWindMaxLSB
+            // 
+            this.lblWindMaxLSB.AutoSize = true;
+            this.lblWindMaxLSB.Location = new System.Drawing.Point(390, 86);
+            this.lblWindMaxLSB.Name = "lblWindMaxLSB";
+            this.lblWindMaxLSB.Size = new System.Drawing.Size(91, 13);
+            this.lblWindMaxLSB.TabIndex = 22;
+            this.lblWindMaxLSB.Text = "01.01.2012 13:13";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(526, 281);
+            this.Controls.Add(this.lblWindMaxLSB);
+            this.Controls.Add(this.lblWindMinLSB);
+            this.Controls.Add(this.lblWindMaxMSB);
+            this.Controls.Add(this.lblWindMinMSB);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.lblWindLSB);
+            this.Controls.Add(this.lblWindMSB);
             this.Controls.Add(this.lblBatteryVoltage);
             this.Controls.Add(this.lblTemperature);
             this.Controls.Add(this.lblWindDirection);
@@ -224,6 +312,14 @@
         private System.Windows.Forms.Label lblWindDirection;
         private System.Windows.Forms.Label lblTemperature;
         private System.Windows.Forms.Label lblBatteryVoltage;
+        private System.Windows.Forms.Label lblWindMSB;
+        private System.Windows.Forms.Label lblWindLSB;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label lblWindMinMSB;
+        private System.Windows.Forms.Label lblWindMaxMSB;
+        private System.Windows.Forms.Label lblWindMinLSB;
+        private System.Windows.Forms.Label lblWindMaxLSB;
     }
 }
 

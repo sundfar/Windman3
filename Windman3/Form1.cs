@@ -56,6 +56,12 @@ namespace Windman3
                     lblLastMeasure.Text = DateTime.Now.ToString("dd.MM.yyyy HH:mm", System.Globalization.CultureInfo.CreateSpecificCulture("nb-NO"));
                     lblWindDirection.Text = _measureManager.CurrentMeasure.WindDirectionAsString;
                     lblWindSpeedAverage.Text = _measureManager.CurrentMeasure.WindSpeedAverageAsString;
+                    lblWindMSB.Text = _measureManager.WindMSB;
+                    lblWindLSB.Text = _measureManager.WindLSB;
+                    lblWindMinMSB.Text = _measureManager.WindMinMSB;
+                    lblWindMinLSB.Text = _measureManager.WindMinLSB;
+                    lblWindMaxMSB.Text = _measureManager.WindMaxMSB;
+                    lblWindMaxLSB.Text = _measureManager.WindMaxLSB;
                     lblWindSpeedMinimum.Text = _measureManager.CurrentMeasure.WindSpeedMinimumAsString;
                     lblWindSpeedMaximum.Text = _measureManager.CurrentMeasure.WindSpeedMaximumAsString;
                     lblWindDirection.Text = _measureManager.CurrentMeasure.WindDirectionAsString;
