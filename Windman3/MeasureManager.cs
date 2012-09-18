@@ -11,8 +11,7 @@ namespace Windman3
         private int _packetSize;
         private Measure _measure;
         private decimal _measureIntervall;
-        private decimal _mphFactor;
-        private decimal _msFactor;
+        private decimal _windDirectionDisplacement;
         private decimal _msbFactor;
         private List<Measure> _measures;
 
@@ -61,8 +60,7 @@ namespace Windman3
         {
             _packetSize = Int32.Parse(ConfigurationManager.AppSettings["PacketSize"].ToString());
             _measureIntervall = decimal.Parse(ConfigurationManager.AppSettings["MeasureIntervallInSeconds"].ToString());
-            _mphFactor = 2.25M;
-            _msFactor = 0.44704M;
+            _windDirectionDisplacement = decimal.Parse(ConfigurationManager.AppSettings["WindDirectionDisplacement"].ToString());
             _msbFactor = 256M;
             IsReady = false;
             _measures = new List<Measure>();
@@ -94,21 +92,6 @@ namespace Windman3
             {
                 IsReady = false;
             }
-
-            //Measure m = new Measure();
-
-            //if ((pMeasure.Length > 59) && (pMeasure[0] == 35))
-            //{
-            //    decimal decMSB = decimal.Parse(pMeasure[50].ToString());
-            //    decimal decLSB = decimal.Parse(pMeasure[51].ToString());
-
-            //    decimal res = 0.0878906m * ((decMSB * 256) + decLSB);
-            //    _measure.WindDirection = res;
-            //}
-            //else
-            //{
-            //    IsReady = true;
-            //}
         }
 
         private decimal ToDec(byte pByte)
@@ -118,22 +101,31 @@ namespace Windman3
 
         private decimal CalculateWindDirection(decimal pMSB, decimal pLSB)
         {
-            return (0.0878906M * ((pMSB * _msbFactor) + pLSB));
+            return (0.0878906M * ((pMSB * _msbFactor) + pLSB)) + _windDirectionDisplacement;
         }
 
         private decimal CalculateWindSpeedAverage(decimal pMSB, decimal pLSB)
         {
-            return ((_mphFactor * _msFactor) * ((pMSB * _msbFactor) + pLSB)) / _measureIntervall;
+            return (((pMSB * _msbFactor) + pLSB) / _measureIntervall);
         }
 
         private decimal CalculateWindSpeedMinimum(decimal pMSB, decimal pLSB)
         {
-            return ((_mphFactor * _msFactor) * ((pMSB * _msbFactor) + pLSB)) / _measureIntervall;
+            return CalculatePulseTimeAnemometer(pMSB, pLSB);
         }
 
         private decimal CalculateWindSpeedMaximum(decimal pMSB, decimal pLSB)
         {
-            return ((_mphFactor * _msFactor) * ((pMSB * _msbFactor) + pLSB)) / _measureIntervall;
+            return CalculatePulseTimeAnemometer(pMSB, pLSB);
+        }
+
+        private decimal CalculatePulseTimeAnemometer(decimal pMSB, decimal pLSB)
+        {
+            if ((pMSB == 0) && (pLSB == 0))
+                return 0;
+            if ((pMSB == 256) && (pLSB == 256))
+                return 0;
+            return (10000 / ((pMSB * _msbFactor) + pLSB));
         }
 
         private decimal CalculateTemperature(decimal pMSB, decimal pLSB)

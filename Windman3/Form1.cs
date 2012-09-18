@@ -52,7 +52,7 @@ namespace Windman3
             {
                 if (_measureManager.CurrentMeasure != null)
                 {
-                    textBox1.Text += _measureManager.CurrentMeasure.WindDirection.ToString() + " | .";
+                    textBox1.Text += _measureManager.CurrentMeasure.WindDirection.ToString() + " | ";
                     lblLastMeasure.Text = DateTime.Now.ToString("dd.MM.yyyy HH:mm", System.Globalization.CultureInfo.CreateSpecificCulture("nb-NO"));
                     lblWindDirection.Text = _measureManager.CurrentMeasure.WindDirectionAsString;
                     lblWindSpeedAverage.Text = _measureManager.CurrentMeasure.WindSpeedAverageAsString;
@@ -71,6 +71,7 @@ namespace Windman3
                     _vsComm.SendData(_measureManager.CurrentMeasure);
                 }
             }
+            //Don't accumulate measures
             _measureManager.Reset();
         }
     }
