@@ -130,7 +130,8 @@ namespace Windman3
 
         private decimal CalculateTemperature(decimal pMSB, decimal pLSB)
         {
-            return ((((pMSB * _msbFactor) + pLSB) * 0.024414M) - 40);
+            return ((((pMSB * _msbFactor) + pLSB) * 0.12207M) - 273.15M);
+            //((2466 * 0.12207) -273.15) = 27,87 degrees C
         }
 
         private decimal CalculateBatteryVoltage(decimal pMSB, decimal pLSB)

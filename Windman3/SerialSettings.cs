@@ -59,7 +59,6 @@ namespace Windman3
                 default:
                     break;
             }
-            //ss.FlowControl = ConfigurationManager.AppSettings["FlowControl"];
             return ss;
         }
     }

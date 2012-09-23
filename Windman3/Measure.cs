@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Globalization;
 
 namespace Windman3
 {
@@ -19,7 +20,7 @@ namespace Windman3
         {
             get
             { 
-                return WindSpeedMinimum.ToString("N"); 
+                return WindSpeedMinimum.ToString("0.##", CultureInfo.InvariantCulture); 
             }
         }
 
@@ -27,7 +28,7 @@ namespace Windman3
         {
             get
             {
-                return WindSpeedMaximum.ToString("N");
+                return WindSpeedMaximum.ToString("0.##", CultureInfo.InvariantCulture);
             }
         }
 
@@ -35,7 +36,7 @@ namespace Windman3
         {
             get
             {
-                return WindSpeedAverage.ToString("N");
+                return WindSpeedAverage.ToString("0.##", CultureInfo.InvariantCulture);
             }
         }
 
@@ -43,7 +44,7 @@ namespace Windman3
         {
             get
             {
-                return WindDirection.ToString("N");
+                return WindDirection.ToString("0.##", CultureInfo.InvariantCulture);
             }
         }
 
@@ -51,7 +52,7 @@ namespace Windman3
         {
             get
             {
-                return Temperature.ToString("N");
+                return Temperature.ToString("0.##", CultureInfo.InvariantCulture);
             }
         }
 
@@ -59,7 +60,7 @@ namespace Windman3
         {
             get
             {
-                return BatteryVoltage.ToString("N");
+                return BatteryVoltage.ToString("0.##", CultureInfo.InvariantCulture);
             }
         }
     }

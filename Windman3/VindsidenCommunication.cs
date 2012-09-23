@@ -34,27 +34,47 @@ namespace Windman3
             url += "v=" + version;
             url += "&ID=" + stationId;
             url += "&CC=" + stationCC;
-            url += "&Wind=" + "8.4";
-            //url += "&Wind=" + pMeasure.WindSpeedAverageAsString;
+            //url += "&Wind=" + "8.4";
+            url += "&Wind=" + pMeasure.WindSpeedAverageAsString;
             url += "&WindStDev=" + "";
-            url += "&WindMin=" + "";
-            //url += "&WindMin=" + pMeasure.WindSpeedMinimumAsString;
-            url += "&WindMax=" + "";
-            //url += "&WindMax=" + pMeasure.WindSpeedMaximumAsString;
-            url += "&Dir=" + "130";
-            //url += "&Dir=" + pMeasure.WindDirectionAsString;
+            //url += "&WindMin=" + "";
+            url += "&WindMin=" + pMeasure.WindSpeedMinimumAsString;
+            //url += "&WindMax=" + "";
+            url += "&WindMax=" + pMeasure.WindSpeedMaximumAsString;
+            //url += "&Dir=" + "130";
+            url += "&Dir=" + pMeasure.WindDirectionAsString;
             url += "&DirV=" + "";
             url += "&DirStDev=" + "";
-            url += "&Temp1=" + "13";
-            //url += "&Temp1=" + .pMeasure.TemperatureAsString;
-            url += "&Battery=" + "12";
-            //url += "&Battery=" + pMeasure.BatteryVoltageAsString;
+            //url += "&Temp1=" + "13";
+            url += "&Temp1=" + pMeasure.TemperatureAsString;
+            //url += "&Battery=" + "12";
+            url += "&Battery=" + pMeasure.BatteryVoltageAsString;
 
-            Stream data = client.OpenRead(url);
-            StreamReader reader = new StreamReader(data);
-            string s = reader.ReadToEnd();
-            data.Close();
-            reader.Close();
+            Stream data = null;
+            string s = string.Empty;
+            StreamReader reader = null;
+            try
+            {
+                data = client.OpenRead(url);
+                reader = new StreamReader(data);
+                s = reader.ReadToEnd();
+            }
+            catch (Exception ex)
+            {
+                //TODO: Log Exception
+                //throw;
+            }
+            finally
+            {
+                if (data != null)
+                {
+                    data.Close();
+                }
+                if (reader != null)
+                {
+                    reader.Close();
+                }     
+            }
 
             return s.Contains("OK");
         }
