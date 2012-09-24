@@ -13,6 +13,8 @@
 # Build results
 [Dd]ebug/
 [Rr]elease/
+NLog.2.0.0.2000/
+NLog.Config.2.0.0.2000/
 *_i.c
 *_p.c
 *.ilk

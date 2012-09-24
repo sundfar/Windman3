@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Configuration;
+using NLog;
 
 namespace Windman3
 {
@@ -15,9 +9,12 @@ namespace Windman3
         MeasureManager _measureManager;
         SerialPortManager _spManager;
         VindsidenCommunication _vsComm;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public Form1()
         {
             InitializeComponent();
+            this.Text = "Windman";
         }
 
         private void Form1_Load(object sender, EventArgs e)

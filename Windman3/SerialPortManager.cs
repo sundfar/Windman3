@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO.Ports;
-using System.Reflection;
-using System.ComponentModel;
-using System.Threading;
-using System.IO;
 
 namespace Windman3
 {
@@ -71,17 +64,15 @@ namespace Windman3
         {
             if (_serialPort.BytesToRead == _measureManager.PacketSize)
             {
+                int dataLength = _serialPort.BytesToRead;
+                byte[] data = new byte[dataLength];
+                int nbrDataRead = _serialPort.Read(data, 0, dataLength);
+                if (nbrDataRead == 0)
+                    return;
 
-            int dataLength = _serialPort.BytesToRead;
-            byte[] data = new byte[dataLength];
-            int nbrDataRead = _serialPort.Read(data, 0, dataLength);
-            //_measureManager.Add(data);
-            if (nbrDataRead == 0)
-                return;
-
-            // Send data to whom ever interested
-            if (NewSerialDataRecieved != null)
-                NewSerialDataRecieved(this, new SerialDataEventArgs(data));
+                // Send data to whom ever interested
+                if (NewSerialDataRecieved != null)
+                    NewSerialDataRecieved(this, new SerialDataEventArgs(data));
             }
         }
 
